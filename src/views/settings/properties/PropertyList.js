@@ -5,11 +5,17 @@ import {
   CCardBody,
   CRow,
   CButton,
-  CContainer
+  CContainer,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody
 } from '@coreui/react'
 import axios from 'axios';
 
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+
+import AddPropertyForm from './AddPropertyForm';
 
 const PropertyList = (props) => {
 
@@ -17,6 +23,8 @@ const PropertyList = (props) => {
   const [loading, setLoading] = useState(true);
   const [saveOrder, setSaveOrder] = useState(false);
   const [savingOrder, setSavingOrder] = useState(false);
+
+  const [addVehicleProperty, setAddVehicleProperty] = useState(false);
 
   useEffect(() => {
     getVehicleProperties();
@@ -113,9 +121,24 @@ const PropertyList = (props) => {
               {provided.placeholder}
             </CCol>
           }}
-        </Droppable> 
+        </Droppable>
+        <CRow className="mt-3" alignHorizontal="center">
+          <CButton color="primary" onClick={() => setAddVehicleProperty(true)}>Add Vehicle Column</CButton>
+        </CRow>
       </CCol>
+      <CModal 
+        show={addVehicleProperty} 
+        onClose={setAddVehicleProperty}
+      >
+        <CModalHeader closeButton>
+          <CModalTitle>Adding a new vehicle column</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            <AddPropertyForm getVehicleProperties={getVehicleProperties} setAddVehicleProperty={ setAddVehicleProperty }/>
+        </CModalBody>
+      </CModal>
     </DragDropContext>
+      
   );
 }
  
