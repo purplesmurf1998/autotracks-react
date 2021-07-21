@@ -17,10 +17,22 @@ const _nav =  [
   //   _children: ['Pages']
   // },
   {
-    _tag: 'CSidebarNavItem',
+    _tag: 'CSidebarNavDropdown',
     name: 'Vehicles',
-    to: '/vehicles/view',
-    icon: <CIcon name="cil-align-left" customClasses="c-sidebar-nav-icon"/>,
+    route: '/vehicles',
+    icon: <CIcon name="cil-align-left" customClasses="c-sidebar-nav-icon" />,
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'List',
+        to: '/vehicles/list',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Add',
+        to: '/vehicles/add',
+      },
+    ]
   },
   // {
   //   _tag: 'CSidebarNavItem',

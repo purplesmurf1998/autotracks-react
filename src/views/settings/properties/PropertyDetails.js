@@ -9,7 +9,9 @@ import {
 import CIcon from '@coreui/icons-react'
 import axios from 'axios'
 
-const PropertyDetails = ({ property, setEditingProperty }) => {
+import PropertyList from './PropertyList'
+
+const PropertyDetails = ({ property, setEditingProperty, setDeletedProperty, deletedProperty }) => {
 
   const handleDelete = () => {
     console.log("Test");
@@ -18,7 +20,8 @@ const PropertyDetails = ({ property, setEditingProperty }) => {
       url: `/api/v1/vehicles/properties/models/${property._id}`
     }).then(results => {
       // refresh properties list somehow
-      console.log(results.data.data)
+      console.log(results.data.data);
+      setDeletedProperty(!deletedProperty);
     }).catch(err => {
       console.error(err);
     });

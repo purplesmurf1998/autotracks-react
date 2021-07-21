@@ -13,6 +13,7 @@ const PorpertySettings = () => {
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [editingProperty, setEditingProperty] = useState(null);
+  const [deletedProperty, setDeletedProperty] = useState(false);
 
   return ( 
     <CRow className="mt-3">
@@ -21,14 +22,14 @@ const PorpertySettings = () => {
           <h3>List of vehicle column headers</h3>
         </CRow>
         <hr></hr>
-        <PropertyList setSelectedProperty={ setSelectedProperty }/>
+        <PropertyList setSelectedProperty={setSelectedProperty} selectedProperty={selectedProperty} deletedProperty={ deletedProperty }/>
       </CCol>
       <CCol>
         <CRow alignHorizontal="center">
           <h3>Column header details</h3>
         </CRow>
         <hr></hr>
-        {!editingProperty && <PropertyDetails property={selectedProperty} setEditingProperty={setEditingProperty} />}
+        {!editingProperty && <PropertyDetails property={selectedProperty} setEditingProperty={setEditingProperty} setDeletedProperty={setDeletedProperty} deletedProperty={ deletedProperty }/>}
         {editingProperty && <EditProperty property={selectedProperty} setEditingProperty={setEditingProperty} setSelectedProperty={ setSelectedProperty }/>}
       </CCol>
     </CRow>

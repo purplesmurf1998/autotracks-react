@@ -28,7 +28,7 @@ const PropertyList = (props) => {
 
   useEffect(() => {
     getVehicleProperties();
-  }, [])
+  }, [props.deletedProperty])
 
   const getVehicleProperties = () => {
     axios({
@@ -98,25 +98,49 @@ const PropertyList = (props) => {
           {(provided) => {
             return <CCol innerRef={provided.innerRef} {...provided.droppableProps}>
               {propertyList.map((property, index) => {
-                return <Draggable draggableId={property._id} index={index} key={property._id}>
-                  {(provided) => {
-                    return <CCard
-                      className="mt-2"
-                      href="#"
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      innerRef={provided.innerRef}
-                      onClick={() => props.setSelectedProperty(property)}
-                    >
-                      <CCardBody>
-                        <CRow alignHorizontal="between" className="pl-3 pr-3 pb-0">
-                          <p style={{margin: '0', padding: '0'}}>{property.headerName}</p>
-                          <h6 style={{margin: '0', padding: '0'}}>Position: {property.position}</h6>
-                        </CRow>
-                      </CCardBody>
-                    </CCard>
-                  }}
-                </Draggable>
+                return props.selectedProperty && property._id === props.selectedProperty._id ? (
+                  <Draggable draggableId={property._id} index={index} key={property._id}>
+                    {(provided) => {
+                      return <CCard
+                        className="mt-2"
+                        href="#"
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        innerRef={provided.innerRef}
+                        onClick={() => props.setSelectedProperty(property)}
+                        color="primary"
+                        textColor="white"
+                      >
+                        <CCardBody>
+                          <CRow alignHorizontal="between" className="pl-3 pr-3 pb-0">
+                            <p style={{margin: '0', padding: '0'}}>{property.headerName}</p>
+                            <h6 style={{margin: '0', padding: '0'}}>Position: {property.position}</h6>
+                          </CRow>
+                        </CCardBody>
+                      </CCard>
+                    }}
+                  </Draggable>
+                ) : (
+                  <Draggable draggableId={property._id} index={index} key={property._id}>
+                    {(provided) => {
+                      return <CCard
+                        className="mt-2"
+                        href="#"
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        innerRef={provided.innerRef}
+                        onClick={() => props.setSelectedProperty(property)}
+                      >
+                        <CCardBody>
+                          <CRow alignHorizontal="between" className="pl-3 pr-3 pb-0">
+                            <p style={{margin: '0', padding: '0'}}>{property.headerName}</p>
+                            <h6 style={{margin: '0', padding: '0'}}>Position: {property.position}</h6>
+                          </CRow>
+                        </CCardBody>
+                      </CCard>
+                    }}
+                  </Draggable>  
+                )
               })}
               {provided.placeholder}
             </CCol>

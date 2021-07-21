@@ -38,11 +38,16 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 const Users = React.lazy(() => import('./views/users/Users'));
 const User = React.lazy(() => import('./views/users/User'));
 const Settings = React.lazy(() => import('./views/settings/Settings'));
+const VehicleList = React.lazy(() => import('./views/vehicles/list/VehicleList'));
+const VehicleAdd = React.lazy(() => import('./views/vehicles/add/VehicleAdd'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/settings', name: 'Settings', component: Settings },
+  { path: '/vehicles', name: 'Vehicles', component:  VehicleList, exact: true},
+  { path: '/vehicles/list', name: 'List', component: VehicleList },
+  { path: '/vehicles/add', name: 'Add', component: VehicleAdd },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
