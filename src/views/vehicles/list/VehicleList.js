@@ -9,12 +9,17 @@ import {
   CDataTable,
   CLabel,
   CRow,
-  CLink
+  CLink,
+  CModal,
+  CModalBody,
+  CModalHeader,
+  CModalTitle
 } from '@coreui/react'
 import { DocsLink } from 'src/reusable'
 
 import usersData from '../../users/UsersData'
 import axios from 'axios'
+import VehicleDetails from '../details/VehicleDetails'
 
 const getBadge = status => {
   switch (status) {
@@ -32,13 +37,16 @@ const VehicleList = () => {
   const [vehicles, setVehicles] = useState([]);
   const [columns, setColumns] = useState([]);
   const [columnInfo, setColumnInfo] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   useEffect(() => {
     axios({
       method: 'get',
       url: '/api/v1/vehicles/properties/models',
       params: {
-        dealershipId: '60df22510a17a047b04daa11',
+        dealership: '60df22510a17a047b04daa11',
+        inventoryList: 'true',
         sort: 'position'
       }
     }).then(colResults => {
@@ -80,7 +88,6 @@ const VehicleList = () => {
       });
       tempVehicles.push(tempVehicle);
     })
-    console.log(tempVehicles);
     setVehicles(tempVehicles);
   }
 
@@ -97,29 +104,28 @@ const VehicleList = () => {
         items={vehicles}
         fields={columns}
         hover
+        clickableRows
         bordered
         size="sm"
         itemsPerPage={10}
         pagination
-        scopedSlots = {{
-          'status':
-            (item)=>(
-              <td>
-                <CBadge color={getBadge(item.status)}>
-                  {item.status}
-                </CBadge>
-              </td>
-            ),
-          'properties':
-            (item) => (
-              item.properties ? <td>{item.properties.name}</td> : <td>{item.name}</td>
-            ),
-          'properties':
-            (item) => (
-              item.properties ? <td>{item.properties.registered}</td> : <td>{item.registered}</td>
-            )
+        onRowClick={(item, index) => {
+          setSelectedVehicle(item);
+          setShowDetails(true);
         }}
       />
+      <CModal 
+        show={showDetails} 
+          onClose={setShowDetails}
+          size="lg"
+      >
+        <CModalHeader closeButton>
+          <CModalTitle>Vehicle Details</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+            {selectedVehicle && showDetails && <VehicleDetails vehicleId={selectedVehicle._id} dealershipId={selectedVehicle.dealership} />}
+        </CModalBody>
+      </CModal>
       </CCardBody>
     </CCard>
   ) : (

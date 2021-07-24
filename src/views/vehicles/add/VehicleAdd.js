@@ -11,7 +11,7 @@ import {
   CSelect,
   CLabel,
   CButton,
-  
+  CAlert
 } from '@coreui/react'
 import axios from 'axios';
 
@@ -19,13 +19,15 @@ const VehicleAdd = () => {
 
   const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     axios({
       method: 'get',
       url: '/api/v1/vehicles/properties/models',
       params: {
-        dealershipId: '60df22510a17a047b04daa11',
+        dealership: '60df22510a17a047b04daa11',
         sort: 'position'
       }
     }).then(results => {
@@ -50,6 +52,11 @@ const VehicleAdd = () => {
       properties[field.field] = e.target[field.field].value
     })
     console.log(properties);
+    setSuccess('Vehicle added successfully.')
+    e.target.reset();
+    setTimeout(() => {
+      setSuccess(null);
+    }, 3000)
   }
 
   return loading ? (
@@ -57,6 +64,9 @@ const VehicleAdd = () => {
   ) : (
     <CRow>
       <CCol>
+        {success && <CAlert color="success">
+          {success}
+        </CAlert>}
         <CCard>
           <CCardHeader>
             <h3 style={{margin: '0', padding: '0'}}>Add New Vehicle</h3>
@@ -69,7 +79,7 @@ const VehicleAdd = () => {
                     return <CCol xs="sm-12">
                       <CFormGroup key={`${field.field}-${index}`}>
                         <CLabel key={index}>{field.headerName}</CLabel>
-                        <CInput key={field.field} id={field.field} name={field.field} type="text"></CInput>
+                        <CInput key={field.field} id={field.field} name={field.field} type="text" required={field.isRequired}></CInput>
                       </CFormGroup>
                     </CCol>
                     break;
@@ -77,15 +87,15 @@ const VehicleAdd = () => {
                     return <CCol xs="sm-12">
                       <CFormGroup key={`${field.field}-${index}`}>
                         <CLabel key={index}>{field.headerName}</CLabel>
-                        <CInput key={field.field} id={field.field} name={field.field} type="number"></CInput>
+                        <CInput key={field.field} id={field.field} name={field.field} type="number" required={field.isRequired}></CInput>
                       </CFormGroup>
                     </CCol>
                     break;
                   case 'Date':
-                    return <CCol xs="sm-6">
+                    return <CCol xs="sm-4">
                       <CFormGroup key={`${field.field}-${index}`}>
                         <CLabel key={index}>{field.headerName}</CLabel>
-                        <CInput type="date" key={field.field} id={field.field} name={field.field} placeholder="date" />
+                        <CInput type="date" key={field.field} id={field.field} name={field.field} placeholder="date" required={field.isRequired}/>
                       </CFormGroup>
                     </CCol>
                     break;
@@ -93,7 +103,7 @@ const VehicleAdd = () => {
                     return <CCol xs="sm-12">
                       <CFormGroup key={`${field.field}-${index}`}>
                         <CLabel key={index}>{field.headerName}</CLabel>
-                        <CSelect key={field.field} id={field.field} name={field.field}>
+                        <CSelect key={field.field} id={field.field} name={field.field} required={field.isRequired}>
                           <option value=''>Select an option</option>
                           {field.options.map(option => {
                             return <option value={option}>{option}</option>
@@ -106,7 +116,8 @@ const VehicleAdd = () => {
                     return <CCol xs="sm-12">
                       <CFormGroup key={`${field.field}-${index}`}>
                         <CLabel key={index}>{field.headerName}</CLabel>
-                        <CInput key={field.field} id={field.field} name={field.field} type="text"></CInput>
+                        <CInput key={field.field} id={field.field} name={field.field} type="text" required={field.isRequired}></CInput>
+                        <p className="help-block">{"Enter list of options using ; as the delimiter. Ex: Showroom;Demoline;Rental"}</p>
                       </CFormGroup>
                     </CCol>
                     break;
@@ -114,7 +125,7 @@ const VehicleAdd = () => {
                     return <CCol xs="sm-12">
                       <CFormGroup key={`${field.field}-${index}`}>
                         <CLabel key={index}>{field.headerName}</CLabel>
-                        <CInput key={field.field} id={field.field} name={field.field} type="text"></CInput>
+                        <CInput key={field.field} id={field.field} name={field.field} type="text" required={field.isRequired}></CInput>
                       </CFormGroup>
                     </CCol>
                     break;
@@ -129,7 +140,7 @@ const VehicleAdd = () => {
         </CCard>
         </CCol>
         <CCol>
-          <CCard></CCard>
+          
         </CCol>
     </CRow>
    );

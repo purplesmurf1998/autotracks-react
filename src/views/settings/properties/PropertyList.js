@@ -35,7 +35,7 @@ const PropertyList = (props) => {
       method: 'get',
       url: '/api/v1/vehicles/properties/models',
       params: {
-        dealershipId: '60df22510a17a047b04daa11',
+        dealership: '60df22510a17a047b04daa11',
         sort: 'position'
       }
     }).then(results => {
